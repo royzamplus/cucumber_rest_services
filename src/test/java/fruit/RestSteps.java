@@ -3,11 +3,11 @@ package fruit;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
-import cucumber.api.PendingException;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import gherkin.deps.com.google.gson.JsonParser;
 import hooks.ServerHooks;
-import junit.framework.Assert;
+import org.junit.Assert;
 
 import java.net.HttpURLConnection;
 
@@ -38,8 +38,10 @@ public class RestSteps {
     }
 
     @Then("^the response should be JSON:$")
-    public void theResponseShouldBeJSON(String arg1) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
+    public void theResponseShouldBeJSON(String jsonExpected) throws Throwable {
+        JsonParser parser = new JsonParser();
+        Assert.assertEquals("Incorrect JSON representation.",
+                parser.parse(jsonExpected),
+                parser.parse(response.getEntity(String.class)));
     }
 }
